@@ -1,134 +1,16 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>لعبة الألغاز</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-    <script>
-      // Configure Tailwind to use CSS variables for theme colors
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              primary: {
-                300: 'var(--color-primary-300)',
-                400: 'var(--color-primary-400)',
-                500: 'var(--color-primary-500)',
-                600: 'var(--color-primary-600)',
-              },
-            }
-          }
-        }
-      }
-    </script>
-    <style>
-      body {
-        font-family: 'Tajawal', sans-serif;
-      }
-      
-      /* Theme Definitions */
-      :root, [data-theme='cyan'] {
-        --color-primary-300: #67e8f9; /* cyan-300 */
-        --color-primary-400: #22d3ee; /* cyan-400 */
-        --color-primary-500: #06b6d4; /* cyan-500 */
-        --color-primary-600: #0891b2; /* cyan-600 */
-        --color-primary-500-rgb: 6, 182, 212;
-      }
-      [data-theme='emerald'] {
-        --color-primary-300: #6ee7b7; /* emerald-300 */
-        --color-primary-400: #34d399; /* emerald-400 */
-        --color-primary-500: #10b981; /* emerald-500 */
-        --color-primary-600: #059669; /* emerald-600 */
-        --color-primary-500-rgb: 16, 185, 129;
-      }
-      [data-theme='rose'] {
-        --color-primary-300: #fda4af; /* rose-300 */
-        --color-primary-400: #fb7185; /* rose-400 */
-        --color-primary-500: #f43f5e; /* rose-500 */
-        --color-primary-600: #e11d48; /* rose-600 */
-        --color-primary-500-rgb: 244, 63, 94;
-      }
-      [data-theme='violet'] {
-        --color-primary-300: #c4b5fd; /* violet-300 */
-        --color-primary-400: #a78bfa; /* violet-400 */
-        --color-primary-500: #8b5cf6; /* violet-500 */
-        --color-primary-600: #7c3aed; /* violet-600 */
-        --color-primary-500-rgb: 139, 92, 246;
-      }
-
-      /* Font Size Classes */
-      body.font-size-sm { font-size: 14px; }
-      body.font-size-md { font-size: 16px; }
-      body.font-size-lg { font-size: 18px; }
-
-      /* Helper classes for settings modal theme picker */
-      .bg-cyan-500 { background-color: #06b6d4; }
-      .bg-emerald-500 { background-color: #10b981; }
-      .bg-rose-500 { background-color: #f43f5e; }
-      .bg-violet-500 { background-color: #8b5cf6; }
-
-      @keyframes moveGrid {
-        from {
-          background-position: 0 0;
-        }
-        to {
-          background-position: -40px -40px;
-        }
-      }
-      /* Custom styles for range inputs */
-      .custom-range {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 100%;
-        height: 8px;
-        background: #334155; /* slate-700 */
-        border-radius: 5px;
-        outline: none;
-        cursor: pointer;
-      }
-      .custom-range::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 20px;
-        height: 20px;
-        background: var(--color-primary-500);
-        border-radius: 50%;
-        cursor: pointer;
-        transition: background .2s;
-      }
-      .custom-range::-moz-range-thumb {
-        width: 20px;
-        height: 20px;
-        background: var(--color-primary-500);
-        border-radius: 50%;
-        cursor: pointer;
-        border: none;
-        transition: background .2s;
-      }
-      .custom-range:hover::-webkit-slider-thumb, .custom-range:focus::-webkit-slider-thumb {
-        background: var(--color-primary-400);
-      }
-      .custom-range:hover::-moz-range-thumb, .custom-range:focus::-moz-range-thumb {
-        background: var(--color-primary-400);
-      }
-    </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.25.0"
-  }
-}
-</script>
-</head>
-  <body class="bg-slate-900 text-white">
+    <meta name="description" content="GGAM Web Application" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <title>GGAM App</title>
+  </head>
+  <body>
     <div id="root"></div>
-    <script type="module" src="./index.tsx"></script>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
