@@ -1,11 +1,21 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import type { Riddle, Difficulty } from '../types';
 
-if (!process.env.API_KEY) {
-    throw new Error("API_KEY environment variable not set");
+const API_KEY = "__GEMINI_API_KEY__";
+
+if (API_KEY === "__GEMINI_API_KEY__") {
+    // This will be true if the placeholder was not replaced.
+    // It's better to fail gracefully in the UI. We will handle this in App.tsx
 }
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+let ai: GoogleGenAI | null = null;
+try {
+   ai = new GoogleGenAI({ apiKey: API_KEY });
+} catch (e) {
+  // Error during initialization, will be handled in App.tsx
+  console.error("Failed to initialize GoogleGenAI:", e);
+}
+
 
 const getPromptByDifficulty = (difficulty: Difficulty): string => {
     switch (difficulty) {
@@ -19,7 +29,17 @@ const getPromptByDifficulty = (difficulty: Difficulty): string => {
     }
 };
 
+const ensureAiInitialized = () => {
+    if (!ai) {
+        throw new Error("Gemini AI client is not initialized. Please check your API key.");
+    }
+    return ai;
+}
+
+export const isApiKeySet = () => API_KEY !== "__GEMINI_API_KEY__";
+
 export async function generateRiddle(difficulty: Difficulty): Promise<Riddle> {
+  const ai = ensureAiInitialized();
   try {
     const prompt = getPromptByDifficulty(difficulty);
     const response = await ai.models.generateContent({
@@ -62,6 +82,7 @@ export async function generateRiddle(difficulty: Difficulty): Promise<Riddle> {
 }
 
 export async function generateTruthQuestion(): Promise<string> {
+    const ai = ensureAiInitialized();
     const prompt = "أبغى سؤال صراحة قوووي ومحرج، باللهجة السعودية العامية حقت سواليف الشباب. سؤال يكشف أسرار أو يخلي الواحد يتوهق في الإجابة. عطني السؤال بس بدون أي إضافات.";
     try {
         const response = await ai.models.generateContent({
@@ -79,6 +100,7 @@ export async function generateTruthQuestion(): Promise<string> {
 }
 
 export async function generateDare(): Promise<string[]> {
+    const ai = ensureAiInitialized();
     const prompt = "أعطني 3 تحديات أو عقوبات مضحكة ومناسبة للعب عن بعد في روم صوتي، باللهجة السعودية الدارجة. التحديات يجب ألا تتطلب حركة جسدية كبيرة أو أدوات خاصة. أريد قائمة من 3 جمل نصية فقط.";
     try {
         const response = await ai.models.generateContent({
@@ -118,6 +140,7 @@ export async function generateDare(): Promise<string[]> {
 }
 
 export async function generateSpeedChallengeCategory(): Promise<string> {
+    const ai = ensureAiInitialized();
     const prompt = "أعطني فئة واحدة ممتعة لتحدي سرعة، يمكن استخدامها في لعبة جماعية. مثلاً: 'أشياء تجدها في المطبخ'، 'دول عربية'، 'أسماء شخصيات كرتونية'. أريد اسم الفئة فقط بدون أي مقدمات أو شروحات.";
     try {
         const response = await ai.models.generateContent({
