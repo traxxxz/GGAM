@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { generateRiddle } from './services/geminiService';
+import { generateRiddle, isApiKeySet } from './services/geminiService';
 import type { Riddle, Difficulty, Theme, FontSize } from './types';
 import { LoadingSpinner } from './components/LoadingSpinner';
 import { RiddleDisplay } from './components/RiddleDisplay';
@@ -11,6 +11,7 @@ import { SpeedChallengeGame } from './components/SpeedChallengeGame';
 type GameMode = 'riddle' | 'group' | 'speedChallenge';
 
 const App: React.FC = () => {
+  const [apiKeyReady, setApiKeyReady] = useState(false);
   const [currentRiddle, setCurrentRiddle] = useState<Riddle | null>(null);
   const [userGuess, setUserGuess] = useState<string>('');
   const [feedback, setFeedback] = useState<string>('');
@@ -26,6 +27,10 @@ const App: React.FC = () => {
   const [theme, setTheme] = useState<Theme>('cyan');
   const [fontSize, setFontSize] = useState<FontSize>('font-size-md');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+  useEffect(() => {
+    setApiKeyReady(isApiKeySet());
+  }, []);
 
   // Load settings from localStorage on initial render
   useEffect(() => {
@@ -74,11 +79,11 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (gameMode === 'riddle') {
+    if (gameMode === 'riddle' && apiKeyReady) {
         fetchNewRiddle('medium');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameMode]);
+  }, [gameMode, apiKeyReady]);
 
   const handleSwitchMode = (mode: GameMode) => {
     setGameMode(mode);
@@ -250,6 +255,27 @@ const App: React.FC = () => {
       </div>
     </div>
   );
+
+  const renderApiKeyError = () => (
+     <div className="w-full max-w-2xl mx-auto text-center bg-rose-900/50 border border-rose-700 rounded-2xl p-8">
+        <h2 className="text-3xl font-bold text-rose-300 mb-4">خطأ في الإعدادات</h2>
+        <p className="text-lg text-rose-200 mb-6">
+            مفتاح Gemini API غير مهيأ. لكي تعمل اللعبة، يجب إعداد المفتاح بشكل صحيح.
+        </p>
+        <div className="text-right bg-slate-900 p-4 rounded-lg text-slate-300">
+            <h3 className="font-bold text-lg mb-2">ماذا أفعل؟</h3>
+            <p>إذا كنت صاحب هذا المستودع، يرجى اتباع التعليمات الموجودة في ملف <code className="bg-slate-700 px-1 rounded">README.md</code> لإضافة مفتاح API الخاص بك كـ "Secret" في إعدادات المستودع على GitHub.</p>
+        </div>
+     </div>
+  );
+
+  if (!apiKeyReady) {
+    return (
+      <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center p-4">
+        {renderApiKeyError()}
+      </div>
+    );
+  }
 
 
   return (
